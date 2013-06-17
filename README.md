@@ -1,3 +1,3 @@
-Don't Fuck Up
-A game for the Grasshopper Round Table
-http://grasshoppernyc.com
+Don't Fuck Up <br/>
+A game for the Grasshopper Round Table <br/>
+<a href="http://grasshoppernyc.com">http://grasshoppernyc.com</a>
