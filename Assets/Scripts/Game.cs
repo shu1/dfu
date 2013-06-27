@@ -9,6 +9,7 @@ public class Game : GhopperEnv {
 	public GameObject pegPrefab;
 	public GameObject boardObject;
 	public GameObject clockObject;
+	public GameObject goalRingObject;
 	public Material[] boardMaterials;
 	public Material[] ballMaterials;	// Material transfered to ball on collision with player
 	public Material[] playerMaterials;	// Material assigned to each player sphere
@@ -171,18 +172,14 @@ public class Game : GhopperEnv {
 				}
 			}
 			
-			// TODO: Add goal sounds
 			// Play goal sound
-			// GameObject goalSound = GameObject.Find("soundGoal");
-			// goalSound.GetComponent<GoalSound>().PlayGoalSound();
+			goalRingObject.GetComponent<GoalSound>().PlayGoalSound();
 
 			DespawnBall(ball, scoreeIndex);
 
 			// Reset all players
 			for (int i = 0; i < numPlayers; ++i) {
 				players[i].ResetSphere();
-
-				Debug.Log(i+": "+playerScores[i]);
 			}
 		}
 
