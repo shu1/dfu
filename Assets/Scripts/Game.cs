@@ -11,11 +11,12 @@ public class Game : GhopperEnv {
 	public GameObject clockObject;
 	public Material[] boardMaterials;
 	public Material[] ballMaterials;	// Material transfered to ball on collision with player
+	public Material[] playerMaterials;	// Material assigned to each player sphere
 
 	const int scoreUp = 1;				// Points gained for scoring a goal
 	const int scoreDown = 1;			// Points lost for being scored on
 	const int winScore = 5;				// Points required to win
-	const float boardRadius = 10;		// Radius of board
+	const float boardRadius = 11.1f;	// Radius of board
 	const float spawnRadius = 5;		// Distance of ball spawn from center
 	const float bufferHalfAngle = 10;	// Half the angle-width of buffer zone in degrees
 	
@@ -65,7 +66,7 @@ public class Game : GhopperEnv {
 
 			GameObject playerObject = (GameObject)GameObject.Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
 			players[i] = playerObject.GetComponent<Player>();
-			players[i].InitPlayerInfo(i, playerColors[i], ballMaterials[i], GetBallSpawnPos(i));
+			players[i].InitPlayerInfo(i, playerColors[i], playerMaterials[i], ballMaterials[i], GetBallSpawnPos(i));
 			
 			scoreBezel.SetPlayerName(i, playerNames[i]);
 			scoreBezel.SetPlayerColor(i, playerColors[i]);
@@ -80,7 +81,7 @@ public class Game : GhopperEnv {
 
 		clock.SetGoalSpawnPos(GetBallSpawnPos(0));	// Initialize clock's spawn position, in case the ball disappears before a goal is scored, it has a place to spawn again
 		
-//		SpawnBumpers();		TODO: prefab
+		SpawnBumpers();
 //		SpawnPegs();
 
 		// Add touch input listeners
@@ -158,8 +159,11 @@ public class Game : GhopperEnv {
 			}
 			
 			else {
+
+				
 				playerScores[scorerIndex] += scoreUp;
-				players[scorerIndex].pegs.addPoint(players[scoreeIndex].playerColor);
+				// TODO: Add pegs
+				// players[scorerIndex].pegs.addPoint(players[scoreeIndex].playerColor);
 				scoreBezel.SetPlayerScore(scorerIndex, playerScores[scorerIndex]);
 				
 				if (playerScores[scorerIndex] == winScore) {
@@ -167,17 +171,22 @@ public class Game : GhopperEnv {
 				}
 			}
 			
+			// TODO: Add goal sounds
 			// Play goal sound
-			GameObject goalSound = GameObject.Find("soundGoal");
-			goalSound.GetComponent<GoalSound>().PlayGoalSound();
+			// GameObject goalSound = GameObject.Find("soundGoal");
+			// goalSound.GetComponent<GoalSound>().PlayGoalSound();
 
 			DespawnBall(ball, scoreeIndex);
 
 			// Reset all players
 			for (int i = 0; i < numPlayers; ++i) {
 				players[i].ResetSphere();
+
+				Debug.Log(i+": "+playerScores[i]);
 			}
 		}
+
+
 	}
 
 	// Called when a player has attained the win score
@@ -224,6 +233,7 @@ public class Game : GhopperEnv {
 		for (int i = 0; i < numPlayers; ++i) {
 			angle = i * Mathf.PI * 2 / numPlayers;
 			bumpers[i] = (GameObject)GameObject.Instantiate(bumperPrefab, Vector3.zero, Quaternion.identity);
+			bumpers[i].transform.Rotate(0,180,0);
 			bumpers[i].transform.position = (new Vector3(Mathf.Sin(angle), Mathf.Cos(angle), 0) * boardRadius);
 		}
 	}

@@ -43,11 +43,11 @@ public class Player : MonoBehaviour {
 
 	
 	// Called by Game.cs to initialize player properties
-	public void InitPlayerInfo(int argIndex, Color argColor, Material argBallMaterial, Vector3 argSpawnPos) {
+	public void InitPlayerInfo(int argIndex, Color argColor, Material argPlayerMaterial, Material argBallMaterial, Vector3 argSpawnPos) {
 		playerIndex = argIndex;
 		playerColor = argColor;
+		renderer.material = argPlayerMaterial;
 		ballMaterial = argBallMaterial;
-		renderer.material.color = argColor;
 
 		playerForward = (Vector3.zero - argSpawnPos).normalized;
 		playerRight = Vector3.Cross(playerForward, Vector3.forward).normalized;
@@ -93,14 +93,6 @@ public class Player : MonoBehaviour {
 			}
 			
 			UpdateSphere(null);
-			
-			/* THIS SECTION CAN BE TAKEN OUT IF COLLISIONS WORK FINE
-			foreach (GameObject ball in balls) {
-				if ((transform.position - ball.transform.position).sqrMagnitude < (sphereRadius + ballRadius) * (sphereRadius + ballRadius)) {
-					ShotFired(ball);
-				}
-			}
-			*/
 
 			if (chargeTime == 0) {
 				bCooldown = false;
@@ -117,7 +109,7 @@ public class Player : MonoBehaviour {
 		float scale = Mathf.Min(1 + chargeTime / 2, 1 + maxChargeTime / 2);	// TODO: what are these /2 constants?
 		transform.localScale = new Vector3(scale, scale, scale);
 		transform.Rotate(Vector3.forward * -spin);
-		sphereRadius = scale / 2;	// TODO: is this right? Neil- I dunno... It'd only work if the original sphere is 1 unit in diameter. Scale is the multiplier on the orifinal size.
+		sphereRadius = scale / 2;	// TODO: is this right? Neil- I dunno... It'd only work if the original sphere is 1 unit in diameter. Scale is the multiplier on the original size.
 		
 		// Overload warning
 		if (!bOverload && chargeTime > overloadTime) {
@@ -205,6 +197,7 @@ public class Player : MonoBehaviour {
 	
 	// Calls ShotFired() if a ball enters trigger volume
 	void OnTriggerEnter(Collider ball) {
+		Debug.Log("Trigger!");
 			if (ball.tag == "ball" && renderer.enabled) {
 				ShotFired(ball.gameObject);
 			}

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Ball : MonoBehaviour {
+	GameObject goalRing;				// Gameobject containing the goal ring
+
 	Game gameScript;					// Handle to game.cs (Game Manager) script
 	Clock clockScript;					// Handle to clock.cs (Game Clock) script
 
@@ -15,10 +17,16 @@ public class Ball : MonoBehaviour {
 	float spinFactor;
 	float ballRadius;					// Ball radius to compute rolling
 	Vector3 rollVelocity;				// Ball rolling to show velocity and direction
+
 	
+		
 	public List<AudioClip> shotSounds = new List<AudioClip>();
 
 	void Start () {
+
+		// Find goal ring
+		goalRing = GameObject.Find("goalRing");
+
 		// Grab script handles
 		gameScript = GameObject.Find("GhopperEnv").GetComponent<Game>();
 		clockScript = GameObject.Find("Clock").GetComponent<Clock>();
@@ -71,7 +79,7 @@ public class Ball : MonoBehaviour {
 	// Only collisions with the outer DeathField will trigger OnCollisionEnter() calls
 	void OnCollisionEnter(Collision collision) {
 		foreach(ContactPoint contact in collision.contacts) {
-			if (contact.otherCollider.tag == "DeathField") {
+			if (contact.otherCollider.gameObject == goalRing) {
 				gameScript.GoalScored(gameObject, contact.point, lastTouched);
 				break;
 			}
