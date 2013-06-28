@@ -13,12 +13,12 @@ public class Player : MonoBehaviour {
 	const float speedFactor1 = 1;			// Speed multiplication factor for tier 1 collision
 	const float speedFactor2 = 1.25f;		// Speed multiplication factor for tier 2 collision
 	const float speedFactor3 = 1.5f;		// Speed multiplication factor for tier 3 collision
-	const float minSpeed = 5;				// Internal varibale to hold minimum speed to impart to ball on collision
+	const float minSpeed = 7;				// Internal varibale to hold minimum speed to impart to ball on collision
 	const float maxChargeTime = 3;			// Maximum charge time from touch start that contributes towards sphere size
 	const float overloadTime = 3.5f;		// Time from touch start at which sphere overloads
 	const float cooldownRate = 2;			// Rate at which cooldown takes place relative to charge up
 	const float penaltyFactor = 0.5f;		// Extra factor applied to cooldown rate when overload occurs
-	const float spamTimerStart = 0.9f;		// After touch start, how long before another sphere can be started. Prevents Tiny sphere spamming.
+	const float spamTimerStart = 0.5f;		// After touch start, how long before another sphere can be started. Prevents Tiny sphere spamming.
 	const float ballRadius = 1;				// Radius of ball, used for collision calculation
 	
 	bool bOverload;							// Flag whether the overload warning particles are being displayed
