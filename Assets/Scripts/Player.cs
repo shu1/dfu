@@ -6,7 +6,7 @@ public class Player : MonoBehaviour {
 	public GameObject invalidPrefab;		// Particle on invalid touch
 	public GameObject overloadPrefab;		// Particle when nearing overload
 
-	const float minTouchRadius = 6.5f;		// Crease boundary inner radius
+	const float minTouchRadius = 1;			// Crease boundary inner radius
 	const float maxTouchRadius = 10;		// Crease boundary outer radius
 	const float time1 = 1;					// Time from touch start at which collision changes from tier 1 to tier 2
 	const float time2 = 2;					// Time from touch start at which collision changes from tier 2 to tier 3
