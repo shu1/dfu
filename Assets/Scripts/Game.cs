@@ -16,12 +16,12 @@ public class Game : GhopperEnv {
 
 	const int scoreUp = 1;				// Points gained for scoring a goal
 	const int scoreDown = 1;			// Points lost for being scored on
-	const int winScore = 5;				// Points required to win
+	const int winScore = 3;				// Points required to win
 	const float boardRadius = 11.1f;	// Radius of board
 	const float spawnRadius = 5;		// Distance of ball spawn from center
 	const float bufferHalfAngle = 10;	// Half the angle-width of buffer zone in degrees
 	
-	const float pegDistance = 9;		// Distance of score box from center
+	const float pegDistance = 10.5f;		// Distance of score box from center
 	public int numPlayers;				// Number of players
 	int numBalls;						// Number of balls currently existing
 	int[] playerScores;					// Array keeping track of player scores
@@ -83,7 +83,7 @@ public class Game : GhopperEnv {
 		clock.SetGoalSpawnPos(GetBallSpawnPos(0));	// Initialize clock's spawn position, in case the ball disappears before a goal is scored, it has a place to spawn again
 		
 		SpawnBumpers();
-//		SpawnPegs();
+		SpawnPegs();
 
 		// Add touch input listeners
 		InputMaster.WorldTouchStarted += TouchStarted;
@@ -163,8 +163,7 @@ public class Game : GhopperEnv {
 
 				
 				playerScores[scorerIndex] += scoreUp;
-				// TODO: Add pegs
-				// players[scorerIndex].pegs.addPoint(players[scoreeIndex].playerColor);
+				players[scorerIndex].pegs.addPoint(players[scoreeIndex].playerColor);
 				scoreBezel.SetPlayerScore(scorerIndex, playerScores[scorerIndex]);
 				
 				if (playerScores[scorerIndex] == winScore) {
@@ -188,9 +187,9 @@ public class Game : GhopperEnv {
 
 	// Called when a player has attained the win score
 	void PlayerWins(int playerIndex) {
-		Results results = GetComponent<Results>();
-		results.winningPlayer = playerIndex;
-		results.showResults = true;
+		//Results results = GetComponent<Results>(); TODO: ADD RESULT UI AND FIX THIS.
+		//results.winningPlayer = playerIndex;
+		//results.showResults = true;
 	}
 
 

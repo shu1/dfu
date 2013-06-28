@@ -7,7 +7,7 @@ public class ScoreBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		pegs = new GameObject[5];
+		pegs = new GameObject[3];
 		int i = 0;
 		foreach (Transform child in transform)
 		{
