@@ -8,8 +8,8 @@ public class Ball : MonoBehaviour {
 	Game gameScript;					// Handle to game.cs (Game Manager) script
 	Clock clockScript;					// Handle to clock.cs (Game Clock) script
 
-	const float maxCurveMag = 0.03f;	// Maximum curve magnitude that the ball is allowed to have
-	const float maxSpeed = 10;			// Maximum speed that the ball is allowed to have
+	const float maxCurveMag = 2;		// Maximum curve magnitude that the ball is allowed to have
+	const float maxSpeed = 15;			// Maximum speed that the ball is allowed to have
 
 	int lastTouched;					// The player index of the last player to have touched the ball
 	float currSpeed;					// Last imparted bookkept speed to ball
@@ -19,7 +19,7 @@ public class Ball : MonoBehaviour {
 	Vector3 rollVelocity;				// Ball rolling to show velocity and direction
 
 	
-		
+	
 	public List<AudioClip> shotSounds = new List<AudioClip>();
 
 	void Start () {
@@ -33,19 +33,19 @@ public class Ball : MonoBehaviour {
 
 		switch(gameScript.numPlayers) {
 			case 2:
-				spinFactor = 0.0005f;
+				spinFactor = 0.1f;
 				break;
 			case 3:
-				spinFactor = 0.0006f;
+				spinFactor = 0.125f;
 				break;
 			case 4:
-				spinFactor = 0.0007f;
+				spinFactor = 0.15f;
 				break;
 			case 5:
-				spinFactor = 0.0008f;
+				spinFactor = 0.175f;
 				break;
 			case 6:
-				spinFactor = 0.0009f;
+				spinFactor = 0.2f;
 				break;
 		}
 		
@@ -60,6 +60,12 @@ public class Ball : MonoBehaviour {
 
 	// Currently handles physics velocity limiting
 	void Update() {
+		// Ball Rotation
+		rollVelocity = Vector3.Cross(rigidbody.velocity, Vector3.forward);
+		transform.RotateAround(transform.position, rollVelocity, currSpeed * Time.deltaTime * 180 / (ballRadius * Mathf.PI));
+	}
+
+	void FixedUpdate() {
 		// Speed limiting
 		if (currSpeed > maxSpeed) {
 			rigidbody.velocity = rigidbody.velocity.normalized * maxSpeed;
@@ -67,14 +73,9 @@ public class Ball : MonoBehaviour {
 		}
 
 		// Curve implementation
-		rigidbody.velocity = (rigidbody.velocity + Vector3.Cross(rigidbody.velocity, new Vector3(0, 0, curveMag))).normalized * rigidbody.velocity.magnitude;
-		
-		// Ball Rotation
-		rollVelocity = Vector3.Cross(rigidbody.velocity, Vector3.forward);
-		transform.RotateAround(transform.position, rollVelocity, currSpeed * Time.deltaTime * 180 / (ballRadius * Mathf.PI));
+//		rigidbody.velocity = (rigidbody.velocity + Vector3.Cross(rigidbody.velocity, new Vector3(0, 0, curveMag))).normalized * rigidbody.velocity.magnitude;
+		rigidbody.AddForce(Vector3.Cross(rigidbody.velocity, Vector3.forward) * curveMag);
 	}
-
-
 	
 	// Only collisions with the outer DeathField will trigger OnCollisionEnter() calls
 	void OnCollisionEnter(Collision collision) {

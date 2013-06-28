@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
 	const float speedFactor1 = 1;			// Speed multiplication factor for tier 1 collision
 	const float speedFactor2 = 1.25f;		// Speed multiplication factor for tier 2 collision
 	const float speedFactor3 = 1.5f;		// Speed multiplication factor for tier 3 collision
-	const float minSpeed = 7;				// Internal varibale to hold minimum speed to impart to ball on collision
+	const float minSpeed = 8;				// Internal varibale to hold minimum speed to impart to ball on collision
 	const float maxChargeTime = 3;			// Maximum charge time from touch start that contributes towards sphere size
 	const float overloadTime = 3.5f;		// Time from touch start at which sphere overloads
 	const float cooldownRate = 2;			// Rate at which cooldown takes place relative to charge up
@@ -175,14 +175,6 @@ public class Player : MonoBehaviour {
 			UpdateSphere(touch);
 			
 			balls = GameObject.FindGameObjectsWithTag("ball");	// TODO: don't do this in Update()!
-			
-			/*	THIS SECTION CAN BE TAKEN OUT IF COLLISIONS WORK FINE
-			foreach (GameObject ball in balls) {
-				if ((transform.position - ball.transform.position).sqrMagnitude < (sphereRadius + ballRadius) * (sphereRadius + ballRadius)) {
-					ShotFired(ball);
-				}
-			}
-			*/
 		}
 	}
 	
