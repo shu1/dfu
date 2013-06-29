@@ -204,7 +204,6 @@ public class Player : MonoBehaviour {
 		
 		// Determine impart speed
 		impartSpeed = incomingSpeed * ( (chargeTime - 1) * (maxSpeedFactor - 1) / (maxChargeTime - 1) + 1);
-		Debug.Log("Speed : "+impartSpeed);
 		impartSpeed = Mathf.Max(impartSpeed, minSpeed);
 		
 		// Particles

@@ -154,14 +154,19 @@ public class Game : GhopperEnv {
 			if (scorerIndex == scoreeIndex) {	// Check for own goal
 				if (playerScores[scoreeIndex] > 0){
 					playerScores[scoreeIndex] -= scoreDown;
-					players[scorerIndex].pegs.subtractPoint();
+					players[scoreeIndex].pegs.subtractPoint();
 					scoreBezel.SetPlayerScore(scoreeIndex, playerScores[scoreeIndex]);
 				}
 			}
 			
 			else {
 
-				
+				if (playerScores[scoreeIndex] > 0) {
+					playerScores[scoreeIndex] -= scoreDown;
+					players[scoreeIndex].pegs.subtractPoint();
+					scoreBezel.SetPlayerScore(scoreeIndex, playerScores[scoreeIndex]);
+				}
+
 				playerScores[scorerIndex] += scoreUp;
 				players[scorerIndex].pegs.addPoint(players[scoreeIndex].playerColor);
 				scoreBezel.SetPlayerScore(scorerIndex, playerScores[scorerIndex]);
