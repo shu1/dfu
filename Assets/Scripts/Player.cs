@@ -6,6 +6,8 @@ public class Player : MonoBehaviour {
 	public GameObject invalidPrefab;		// Particle on invalid touch
 	public GameObject overloadPrefab;		// Particle when nearing overload
 
+	public AudioClip invalidSound;			// Sound for invalid touch
+
 	const float minTouchRadius = 1;			// Crease boundary inner radius
 	const float maxTouchRadius = 10;		// Crease boundary outer radius
 	const float time1 = 1;					// Time from touch start at which collision changes from tier 1 to tier 2
@@ -161,6 +163,7 @@ public class Player : MonoBehaviour {
 		}
 
 		if (bInvalid) {
+			audio.PlayOneShot(invalidSound);
 //			Instantiate(invalidPrefab, touch.worldPos, Quaternion.identity);	TODO: prefab
 		}
 	}
