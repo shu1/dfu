@@ -13,8 +13,10 @@ public class Player : MonoBehaviour {
 	const float speedFactor1 = 1;			// Speed multiplication factor for tier 1 collision
 	const float speedFactor2 = 1.25f;		// Speed multiplication factor for tier 2 collision
 	const float speedFactor3 = 1.5f;		// Speed multiplication factor for tier 3 collision
+	const float maxSpeedFactor = 1.2f;
 	const float minSpeed = 8;				// Internal varibale to hold minimum speed to impart to ball on collision
 	const float maxChargeTime = 3;			// Maximum charge time from touch start that contributes towards sphere size
+	const float maxScale = 2.5f;			// Maximum scale that the player sphere mesh grows to
 	const float overloadTime = 3.5f;		// Time from touch start at which sphere overloads
 	const float cooldownRate = 2;			// Rate at which cooldown takes place relative to charge up
 	const float penaltyFactor = 0.5f;		// Extra factor applied to cooldown rate when overload occurs
@@ -106,7 +108,7 @@ public class Player : MonoBehaviour {
 	// Updates sphere position and scale based on current charge time. Also detects sphere overload condition.
 	void UpdateSphere(TouchInfo touch) {
 		// Update sphere size according to current charge time
-		float scale = Mathf.Min(1 + chargeTime / 2, 1 + maxChargeTime / 2);	// TODO: what are these /2 constants?
+		float scale = Mathf.Min( (chargeTime * maxScale/maxChargeTime), maxScale);	// TODO: what are these /2 constants?
 		transform.localScale = new Vector3(scale, scale, scale);
 		transform.Rotate(Vector3.forward * -spin);
 		sphereRadius = scale / 2;	// TODO: is this right? Neil- I dunno... It'd only work if the original sphere is 1 unit in diameter. Scale is the multiplier on the original size.
@@ -144,7 +146,6 @@ public class Player : MonoBehaviour {
 					//Checks if the sphere is being spawned on top of a ball
 					Vector3 touchPos = new Vector3(touch.worldPos.x, touch.worldPos.y, 0);
 					if ((touchPos - ball.transform.position).sqrMagnitude > (sphereRadius + ballRadius) * (sphereRadius + ballRadius)) {
-						Debug.Log(collider);
 						bInvalid = false;
 						bPenalty = false;
 						bTouchDown = true;
@@ -153,6 +154,7 @@ public class Player : MonoBehaviour {
 						spamTimer = spamTimerStart;
 						downTouch = touch;
 						transform.position = touchPos;
+						chargeTime = 1;
 					}
 				}
 			}
@@ -189,7 +191,6 @@ public class Player : MonoBehaviour {
 	
 	// Calls ShotFired() if a ball enters trigger volume
 	void OnTriggerEnter(Collider ball) {
-		Debug.Log("Trigger!");
 			if (ball.tag == "ball" && renderer.enabled) {
 				ShotFired(ball.gameObject);
 			}
@@ -202,16 +203,8 @@ public class Player : MonoBehaviour {
 		float incomingSpeed = ballComponent.GetCurrSpeed();
 		
 		// Determine impart speed
-		if (chargeTime < time1) {
-			impartSpeed = incomingSpeed * speedFactor1;
-		}
-		else if (chargeTime < time2) {
-			impartSpeed = incomingSpeed * speedFactor2;
-		}
-		else {
-			impartSpeed = incomingSpeed * speedFactor3;
-		}
-		
+		impartSpeed = incomingSpeed * ( (chargeTime - 1) * (maxSpeedFactor - 1) / (maxChargeTime - 1) + 1);
+		Debug.Log("Speed : "+impartSpeed);
 		impartSpeed = Mathf.Max(impartSpeed, minSpeed);
 		
 		// Particles
