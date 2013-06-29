@@ -157,6 +157,8 @@ public class Game : GhopperEnv {
 					players[scoreeIndex].pegs.subtractPoint();
 					scoreBezel.SetPlayerScore(scoreeIndex, playerScores[scoreeIndex]);
 				}
+				// Play own goal sound
+				goalRingObject.GetComponent<GoalSound>().PlayGoalSound(true);
 			}
 			
 			else {
@@ -174,10 +176,12 @@ public class Game : GhopperEnv {
 				if (playerScores[scorerIndex] == winScore) {
 					PlayerWins(scorerIndex);
 				}
+
+				// Play goal sound
+				goalRingObject.GetComponent<GoalSound>().PlayGoalSound(false);
 			}
 			
-			// Play goal sound
-			goalRingObject.GetComponent<GoalSound>().PlayGoalSound();
+			
 
 			DespawnBall(ball, scoreeIndex);
 
