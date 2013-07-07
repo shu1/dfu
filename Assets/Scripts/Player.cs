@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 
 	public AudioClip invalidSound;			// Sound for invalid touch
 
-	const float minTouchRadius = 1;			// Crease boundary inner radius
+	const float minTouchRadius = 1.5f;			// Crease boundary inner radius
 	const float maxTouchRadius = 10;		// Crease boundary outer radius
 	const float time1 = 1;					// Time from touch start at which collision changes from tier 1 to tier 2
 	const float time2 = 2;					// Time from touch start at which collision changes from tier 2 to tier 3
@@ -18,12 +18,12 @@ public class Player : MonoBehaviour {
 	const float maxSpeedFactor = 1.2f;
 	const float minSpeed = 8;				// Internal varibale to hold minimum speed to impart to ball on collision
 	const float maxChargeTime = 3;			// Maximum charge time from touch start that contributes towards sphere size
-	const float maxScale = 2.5f;			// Maximum scale that the player sphere mesh grows to
+	const float maxScale = 2;				// Maximum scale that the player sphere mesh grows to
 	const float overloadTime = 3.5f;		// Time from touch start at which sphere overloads
 	const float cooldownRate = 2;			// Rate at which cooldown takes place relative to charge up
 	const float penaltyFactor = 0.5f;		// Extra factor applied to cooldown rate when overload occurs
 	const float spamTimerStart = 0.5f;		// After touch start, how long before another sphere can be started. Prevents Tiny sphere spamming.
-	const float ballRadius = 1;				// Radius of ball, used for collision calculation
+	const float ballRadius = 1.7f;			// Radius of ball, used for collision calculation
 	
 	bool bOverload;							// Flag whether the overload warning particles are being displayed
 	bool bPenalty;							// Being penalized for overload?
@@ -110,14 +110,14 @@ public class Player : MonoBehaviour {
 	// Updates sphere position and scale based on current charge time. Also detects sphere overload condition.
 	void UpdateSphere(TouchInfo touch) {
 		// Update sphere size according to current charge time
-		float scale = Mathf.Min( (chargeTime * maxScale/maxChargeTime), maxScale);	// TODO: what are these /2 constants?
+		float scale = Mathf.Min( (chargeTime * maxScale/maxChargeTime), maxScale);
 		transform.localScale = new Vector3(scale, scale, scale);
 		transform.Rotate(Vector3.forward * -spin);
 		sphereRadius = scale / 2;	// TODO: is this right? Neil- I dunno... It'd only work if the original sphere is 1 unit in diameter. Scale is the multiplier on the original size.
 		
 		// Overload warning
 		if (!bOverload && chargeTime > overloadTime) {
-//			overloadParticleSystem = (GameObject)Instantiate(overloadPrefab, transform.position, Quaternion.identity);	TODO: prefab
+			overloadParticleSystem = (GameObject)Instantiate(overloadPrefab, transform.position, Quaternion.identity);
 			bOverload = true;
 		}
 		
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour {
 
 		if (bInvalid) {
 			audio.PlayOneShot(invalidSound);
-//			Instantiate(invalidPrefab, touch.worldPos, Quaternion.identity);	TODO: prefab
+			Instantiate(invalidPrefab, touch.worldPos, Quaternion.identity);
 		}
 	}
 	
@@ -210,7 +210,7 @@ public class Player : MonoBehaviour {
 		impartSpeed = Mathf.Max(impartSpeed, minSpeed);
 		
 		// Particles
-//		Instantiate(explodePrefab, transform.position, Quaternion.identity);	TODO: prefab
+		Instantiate(explodePrefab, transform.position, Quaternion.identity);
 		
 		// Update ball properties
 		ball.rigidbody.velocity =  impartSpeed * (ball.transform.position - transform.position).normalized;
