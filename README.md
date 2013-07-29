@@ -1,3 +1,2 @@
-Don't Fuck Up <br/>
-A game for the Grasshopper Round Table <br/>
-<a href="http://grasshoppernyc.com" target="_blank">http://grasshoppernyc.com</a>
+Don't Fuck Up by <a href="http://www.studio-mercato.com" target="_blank">Studio Mercato</a><br/>
+A game for the <a href="http://grasshoppernyc.com" target="_blank">Grasshopper Round Table</a>
